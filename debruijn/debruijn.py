@@ -84,18 +84,22 @@ def cut_kmer(read, kmer_size):
 
 def build_kmer_dict(fastq_file, kmer_size):
     
-    dict_kmer = {}
+    kmer_dict = {}
     for seq in read_fastq(fastq_file):
         for kmer in cut_kmer(seq,kmer_size):
-            if kmer not in dict_kmer:
-                dict_kmer[kmer] = 1
+            if kmer not in kmer_dict:
+                kmer_dict[kmer] = 1
             else:
-                dict_kmer[kmer] += 1
-    return dict_kmer
+                kmer_dict[kmer] += 1
+    return kmer_dict
 
 
 def build_graph(kmer_dict):
-    pass
+
+    kmer_graph = nx.DiGraph()
+    for kmer in kmer_dict:
+        node1 , node2 = kmer[:-1], kmer[1:]
+        kmer_graph.add_edge(node1, node2, weight = kmer_dict[kmer])
 
 
 def remove_paths(graph, path_list, delete_entry_node, delete_sink_node):
@@ -193,9 +197,4 @@ def main():
 
 
 if __name__ == '__main__':
-    file = "eva71_two_reads.fq"
-    seq = read_fastq(file)
-    print(truc)
-    for line in seq:
-        print(seq)
-
+    
