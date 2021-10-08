@@ -68,15 +68,30 @@ def get_arguments():
 
 
 def read_fastq(fastq_file):
-    pass
-
+    with open(fastq_file, 'r') as fastq:
+        fastq_lines = fastq.readlines()
+        for i in range(len(fastq_lines)):
+            while fastq_lines[i][0] == "@":
+                yield fastq_lines[i+1]
+                break
 
 def cut_kmer(read, kmer_size):
-    pass
+    
+    read = read.strip('\n')
+    for i in range(len(read) - kmer_size + 1):
+        yield read[i:i+kmer_size]
 
 
 def build_kmer_dict(fastq_file, kmer_size):
-    pass
+    
+    dict_kmer = {}
+    for seq in read_fastq(fastq_file):
+        for kmer in cut_kmer(seq,kmer_size):
+            if kmer not in dict_kmer:
+                dict_kmer[kmer] = 1
+            else:
+                dict_kmer[kmer] += 1
+    return dict_kmer
 
 
 def build_graph(kmer_dict):
@@ -174,5 +189,13 @@ def main():
     #     save_graph(graph, args.graph_file)
 
 
+
+
+
 if __name__ == '__main__':
-    main()
+    file = "eva71_two_reads.fq"
+    seq = read_fastq(file)
+    print(truc)
+    for line in seq:
+        print(seq)
+
