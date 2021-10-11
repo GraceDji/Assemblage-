@@ -68,6 +68,21 @@ def get_arguments():
 
 
 def read_fastq(fastq_file):
+
+	'''
+	This function take the fastq file and return the sequence in it.
+
+	PARAMETERS
+	----------
+		** fastq_file : str
+			The fatsq file name.
+
+	RETURNS
+	-------
+		** generator of sequences 
+
+
+	'''
     with open(fastq_file, 'r') as fastq:
         fastq_lines = fastq.readlines()
         for i in range(len(fastq_lines)):
@@ -76,6 +91,17 @@ def read_fastq(fastq_file):
                 break
 
 def cut_kmer(read, kmer_size):
+	'''
+	Function that split the sequences in kmers 
+
+	PARAMETERS
+	----------
+		** read: str
+			The sequence.
+		** kmer_size: int
+			kmer size
+
+	'''
     
     read = read.strip('\n')
     for i in range(len(read) - kmer_size + 1):
@@ -83,6 +109,21 @@ def cut_kmer(read, kmer_size):
 
 
 def build_kmer_dict(fastq_file, kmer_size):
+
+	'''
+	This function give us a dictionnary which as for keys the kmers and as values 
+	the number of each kmer iterations.
+
+	PARAMETERS 
+	----------
+		** fastq_file
+		** kmer_size
+
+	RETURNS
+	-------
+		** kmer_dict : dict
+			which as for keys the kmers and as values the number of each kmer iterations. 
+	'''
     
     kmer_dict = {}
     for seq in read_fastq(fastq_file):
@@ -96,6 +137,20 @@ def build_kmer_dict(fastq_file, kmer_size):
 
 def build_graph(kmer_dict):
 
+	'''
+	This function is creating an nx graph using a kmer dictionnary.
+
+	PARMATERS
+	---------
+		** kmer_dict : dict
+			which as for keys the kmers and as values the number of each kmer iterations.
+
+	RETURNS
+	-------
+		** A tree graph of the kmers where each nodes representing the kmers and the weight reprensent the iteration.
+
+
+	'''
     kmer_graph = nx.DiGraph()
     for kmer in kmer_dict:
         node1 , node2 = kmer[:-1], kmer[1:]
@@ -193,8 +248,10 @@ def main():
     #     save_graph(graph, args.graph_file)
 
 
-
-
-
 if __name__ == '__main__':
-    
+
+
+
+
+
+
