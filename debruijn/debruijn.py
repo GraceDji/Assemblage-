@@ -250,6 +250,18 @@ def main():
 
 if __name__ == '__main__':
 
+	PARSER = argparse.ArgumentParser()
+	PARSER.add_argument("fastq_file", help = "The Fastq File", type = str)
+	PARSER.add_argument("kmer_size", help = "Kmers size", type = int)
+	ARGS = PARSER.parse_args()
+	FASTQ = ARGS.fastq_file
+	KMER_SIZE = ARGS.kmer_size
+
+
+	dico = build_kmer_dict(FASTQ)
+	print(dico)
+	build_graph(dico)
+
 
 
 
